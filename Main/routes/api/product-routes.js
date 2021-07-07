@@ -1,21 +1,21 @@
-const router = require('express').Router();
-const { Product, Category, Tag, ProductTag } = require('../../models');
+const router = require("express").Router();
+const { Product, Category, Tag, ProductTag } = require("../../models");
 
-router.get('/', async (req, res) => {
-  try{
+router.get("/", async (req, res) => {
+  try {
     const productData = await Product.findAll({
-      include: [{ model: Category }, {model: Tag}],
+      include: [{ model: Category }, { model: Tag }],
     });
     res.status(200).json(productData);
   } catch (err) {
-    res.status(500).json(err)
+    res.status(500).json(err);
   }
 });
 
-router.get('/:id', async (req, res) => {
-  try{
+router.get("/:id", async (req, res) => {
+  try {
     const productData = await Product.findByPk(req.params.id, {
-      include: [{ model: Category }, {model: Tag}],
+      include: [{ model: Category }, { model: Tag }],
     });
 
     if (!productData) {
@@ -25,12 +25,11 @@ router.get('/:id', async (req, res) => {
 
     res.status(200).json(productData);
   } catch (err) {
-    res.status(500).json(err)
+    res.status(500).json(err);
   }
-
 });
 
-router.post('/', (req, res) => {
+router.post("/", (req, res) => {
   Product.create(req.body)
     .then((product) => {
       // if there's product tags, we need to create pairings to bulk create in the ProductTag model
@@ -54,7 +53,7 @@ router.post('/', (req, res) => {
 });
 
 // update product
-router.put('/:id', (req, res) => {
+router.put("/:id", (req, res) => {
   // update product data
   Product.update(req.body, {
     where: {
@@ -95,8 +94,8 @@ router.put('/:id', (req, res) => {
     });
 });
 
-router.delete('/:id', async (req, res) => {
-  try{
+router.delete("/:id", async (req, res) => {
+  try {
     const productData = await Product.destroy({
       where: {
         id: req.params.id,
@@ -110,7 +109,7 @@ router.delete('/:id', async (req, res) => {
 
     res.status(200).json(productData);
   } catch (err) {
-    res.status(500).json(err)
+    res.status(500).json(err);
   }
 });
 
